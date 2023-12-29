@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<meta name="author" content="Dominik Reichl" />
+
+	<meta name="description" content="The IOProtocolExt plugin adds support for various protocols (SCP, SFTP, FTPS, ...)." />
+	<meta name="DC.description" content="The IOProtocolExt plugin adds support for various protocols (SCP, SFTP, FTPS, ...)." />
+
+	<meta name="keywords" content="IOProtocolExt, Plugin, KeePass" />
+
+	<meta name="DC.title" content="IOProtocolExt Plugin" />
+	<meta name="DC.creator" content="Dominik Reichl" />
+	<meta name="DC.type" content="Text" />
+	<meta name="DC.format" content="text/html" />
+	<meta name="DC.language" content="en" />
+	<meta name="DC.rights" content="Copyright (C) 2011-2018 Dominik Reichl" />
+
+	<meta name="robots" content="index, follow" />
+	<meta name="flattr:id" content="42rykv" />
+
+	<title>IOProtocolExt ReadMe</title>
+	<style type="text/css"><!--
+		body, p, div, h1, h2, h3, h4, h5, h6, li, td, th, dd, dt {
+			font-family: Verdana, Helvetica, Arial, sans-serif;
+			font-size: 10pt;
+			color: #000000;
+		}
+
+		h1 {
+			font-weight: bold;
+			font-size: 16pt;
+		}
+
+		h2 {
+			font-weight: bold;
+			font-size: 13pt;
+			color: Navy;
+		}
+
+		h3 {
+			font-weight: bold;
+			font-size: 11pt;
+			color: Navy;
+		}
+
+		table {
+			background-color: #AFB5CF;
+			margin: 0px 0px 0px 0px;
+			padding: 0px 0px 0px 0px;
+			border-left: 1px solid #AFB5CF;
+			border-right: 0px none;
+			border-top-width: 0px;
+			border-bottom-width: 0px;
+			border-collapse: collapse;
+		}
+		
+		table tr th {
+			background-color: #DDDDDD;
+			font-weight: bold;
+			border-bottom: 1px solid #AFB5CF;
+			border-left: 0px none;
+			border-right: 1px solid #AFB5CF;
+			border-top: 1px solid #AFB5CF;
+			empty-cells: show;
+			padding: 2px 2px 2px 5px;
+			white-space: nowrap;
+			text-align: left;
+		}
+		
+		table tr td {
+			background-color: #F0F0F0;
+			font-weight: normal;
+			border-bottom: 1px solid #AFB5CF;
+			border-left: 0px none;
+			border-right: 1px solid #AFB5CF;
+			border-top: 0px none;
+			padding: 5px 5px 5px 5px;
+			empty-cells: show;
+			text-align: left;
+		}
+
+        td.prmname {
+            vertical-align: top;
+            font-family: monospace;
+        }
+	--></style>
+</head>
+<body>
+
+<center>
+<h2>IOProtocolExt Plugin</h2>
+</center>
+
+<p>Copyright &copy; 2011-2018 Dominik Reichl.
+Distributed under the terms of the
+<a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GNU
+General Public License v2</a>.</p>
+
+<p>This plugin adds support for loading/saving files from/to
+servers using the SCP (Secure CoPy) protocol, SFTP (SSH File
+Transfer Protocol) and FTPS (FTP over SSH).</p>
+
+<p>KeePass can handle FTP by default (using classes of the .NET
+framework). However, this plugin replaces the FTP handler to
+use WinSCP instead. So, if you had problems with the .NET FTP
+classes, installing IOProtocolExt might solve them.</p>
+
+<br />
+
+<h3>System Requirements</h3>
+
+<p>IOProtocolExt requires Windows XP or newer.
+Unix-like systems are not supported.</p>
+
+<br />
+
+<h3>Installation &amp; Configuration</h3>
+
+<p><b>Installation.</b>
+Copy the <code>IOProtocolExt*</code> files and the <code>IOProtocolExt_WinSCP</code>
+folder into the <code>Plugins</code> folder (in the KeePass application directory)
+and restart KeePass.</p>
+
+<p><b>Firewall.</b>
+If you're behind a firewall, you must allow <code>WinSCP.exe</code> and
+<code>WinSCP.com</code> (in the <code>IOProtocolExt_WinSCP</code> folder)
+to connect to the server you want to open/save files from/to.</p>
+
+<p><b>Faster saving.</b>
+KeePass by default highly ensures the integrity of
+saved files: when saving, KeePass first opens/downloads the
+file from the server (to see whether it has been changed in the
+meanwhile by a different user), uploads the new file, and
+downloads it again to verify that the stored file indeed
+matches the file that KeePass has sent. Additionally, KeePass
+uses file transactions (saving to a temporary file first and
+renaming it afterwards to the actual file, in order to prevent
+corruption of the actual file when the upload fails for some
+reason). These precautions can result in a slow saving process.
+If you want to speed it up (and lose a bit of safety), disable
+the options <i>'Verify written file after saving a database'</i> and
+<i>'Use file transactions for writing databases'</i> in the KeePass
+options dialog ('Tools' &rarr; 'Options' &rarr; tab 'Advanced').
+This will reduce the saving process to one download and one upload.</p>
+
+<br />
+
+<h3>Usage</h3>
+
+<p>As soon as the plugin is installed once, KeePass can open URLs starting
+with <code>scp://</code>, <code>sftp://</code>, <code>ftps://</code>
+(and of course the ones that were
+supported already, i.e. <code>http://</code>, <code>https://</code> and <code>ftp://</code>).
+To open an URL, go <i>'File'</i> &rarr; <i>'Open'</i> &rarr; <i>'Open URL...'</i>.</p>
+
+<p>URL examples:<br />
+<code>sftp://ftp.example.com/public_html/MyDatabase.kdbx</code><br />
+<code>scp://ssh.example.com:2222/KeePass/MyDatabase.kdbx</code></p>
+
+<p>Advanced connection options (like timeout, expected host key, etc.)
+can be specified on the 'Advanced' tab of the 'Open From URL' dialog.
+For detailed descriptions of the options, see the
+<a href="https://winscp.net/eng/docs/start" target="_blank">WinSCP documentation</a>.</p>
+
+<p><b>FRITZ!Box NAS.</b>
+If you try to load/save files from/to a FRITZ!Box NAS and this fails,
+try turning on the option 'Enable FRITZ!Box NAS workaround'
+(on the 'Advanced' tab of the 'Open From URL' dialog).</p>
+
+<br />
+
+<h3>Acknowledgements</h3>
+
+<p>Thanks to Martin Prikryl, the developer of <a href="https://winscp.net/"
+target="_blank">WinSCP</a>,
+which IOProtocolExt internally uses for communicating with servers.
+WinSCP is distributed under the terms of the GNU General Public License.</p>
+
+<br />
+
+<h3>Version History</h3>
+
+<ul>
+<li><strong>1.16</strong><!-- 2018-12-15 -->
+<ul>
+<li>Explicitly specified raw settings for WinSCP now override any
+raw settings that IOProtocolExt generates.</li>
+<li>The plugin is now provided in dual form (DLL and PLGX).</li>
+<li>Upgraded to WinSCP 5.13.6.</li>
+</ul></li>
+
+<li><strong>1.15</strong><!-- 2018-07-11 -->
+<ul>
+<li>Added option 'Preserve timestamp'
+(on the 'Advanced' tab of the 'Open From URL' dialog).</li>
+<li>Upgraded to WinSCP 5.13.3.</li>
+</ul></li>
+
+<li><strong>1.14</strong><!-- 2018-05-06 -->
+<ul>
+<li>Added option 'Enable FRITZ!Box NAS workaround'
+(on the 'Advanced' tab of the 'Open From URL' dialog).</li>
+</ul></li>
+
+<li><strong>1.13</strong><!-- 2018-04-01 -->
+<ul>
+<li>Improved parameter encoding.</li>
+<li>Upgraded to WinSCP 5.13.1.</li>
+</ul></li>
+
+<li><strong>1.12</strong><!-- 2016-03-19 -->
+<ul>
+<li>Connection options can now be specified for each connection individually
+on the 'Advanced' tab of the 'Open From URL' dialog;
+removed global IOProtocolExt options dialog.</li>
+<li>Added support for specifying SSH
+<a href="https://winscp.net/eng/docs/public_key#private"
+target="_blank">private key</a> paths
+(for SCP and SFTP).</li>
+<li>Added support for specifying fingerprints of expected SSH
+<a href="https://winscp.net/eng/docs/ssh_verifying_the_host_key"
+target="_blank">host keys</a>
+(for SCP and SFTP).</li>
+<li>Added support for specifying fingerprints of expected TLS/SSL
+<a href="https://winscp.net/eng/docs/tls#certificate"
+target="_blank">certificates</a>
+(for FTPS).</li>
+<li>FTPS: unless the fingerprint(s) of the expected TLS/SSL certificate(s)
+has/have been specified explicitly, all certificates are now accepted
+automatically.</li>
+<li>Added option for remembering passphrases for encrypted private keys and
+client certificates (for SCP, SFTP and FTPS);
+it is not recommended to use this, because the passphrases are stored
+in plain text in the KeePass configuration file.</li>
+<li>Added support for specifying WinSCP <a href="https://winscp.net/eng/docs/rawsettings"
+target="_blank">raw settings</a>.</li>
+<li>Updated for KeePass &ge; 2.32.</li>
+<li>Upgraded to WinSCP 5.7.7.</li>
+</ul></li>
+
+<li><strong>1.11</strong><!-- 2016-02-03 -->
+<ul>
+<li>Improved support for paths containing characters that are not in the
+default console code page.</li>
+<li>Upgraded to WinSCP 5.7.6.</li>
+</ul></li>
+
+<li><strong>1.10</strong><!-- 2014-09-22 -->
+<ul>
+<li>Improved support for paths with subdirectories relative to the initial
+working directory.</li>
+<li>Immediate empty response streams are now cached, which avoids several
+unnecessary network communications.</li>
+</ul></li>
+
+<li><strong>1.9</strong><!-- 2014-09-19 -->
+<ul>
+<li>Improved file moving support for paths relative to the initial working directory.</li>
+<li>Updated for KeePass &ge; 2.27.</li>
+<li>Upgraded to WinSCP 5.5.5.</li>
+</ul></li>
+
+<li><strong>1.8</strong><!-- 2013-05-28 -->
+<ul>
+<li>Added support for the KeePass option 'Use system proxy settings'.</li>
+<li>Improved accepting of host keys (this reduces the number of required connections
+per operation by one, resulting in better performance).</li>
+<li>Improved encoding of proxy parameter values.</li>
+<li>Upgraded to WinSCP 5.2.1.</li>
+</ul></li>
+
+<li><strong>1.7</strong><!-- 2013-05-24 -->
+<ul>
+<li>Added support for using the proxy specified manually in KeePass.</li>
+<li>Upgraded to WinSCP 5.1.5.</li>
+</ul></li>
+
+<li><strong>1.6</strong><!-- 2012-03-06 -->
+<ul>
+<li>Added support for user names and passwords containing special characters.</li>
+<li>Upgraded to WinSCP 4.3.7.</li>
+</ul></li>
+
+<li><strong>1.5</strong><!-- 2012-01-06 -->
+<ul>
+<li>Added workaround for a bug in the <code>WebRequest.RegisterPrefix</code>
+method of .NET 4.0.</li>
+</ul></li>
+
+<li><strong>1.4</strong><!-- 2012-01-05 -->
+<ul>
+<li>IOProtocolExt doesn't generate empty <code>cd</code> commands anymore.</li>
+<li>Improved <code>open</code> script command compatibility
+(parameter without quotes).</li>
+<li>When KeePass is started with the <code>-debug</code> command line
+parameter, IOProtocolExt now shows all WinSCP scripts before executing them.</li>
+<li>Upgraded to WinSCP 4.3.6.</li>
+</ul></li>
+
+<li><strong>1.3</strong><!-- 2011-11-25 -->
+<ul>
+<li>Added options dialog ('Tools' &rarr; 'IOProtocolExt Options').</li>
+<li>Added custom server response timeout option.</li>
+<li>Added FTPS options: implicit SSL/TLS, explicit SSL, explicit TLS.</li>
+<li>Upgraded to WinSCP 4.3.5.</li>
+</ul></li>
+
+<li><strong>1.2</strong><!-- 2011-07-12 -->
+<ul>
+<li>Updated for KeePass &ge; 2.16.</li>
+</ul></li>
+
+<li><strong>1.1</strong><!-- 2011-??-?? -->
+<ul>
+<li>Maintenance release.</li>
+</ul></li>
+
+<li><strong>1.0</strong><!-- 2011-06-25 -->
+<ul>
+<li>Initial release.</li>
+</ul></li>
+</ul>
+
+<br />
+
+<h3>Links</h3>
+
+<p>Latest version of IOProtocolExt:<br />
+<a href="https://keepass.info/plugins.html#ioprotocolext">https://keepass.info/plugins.html#ioprotocolext</a></p>
+
+<p>Support:<br />
+<a href="https://sourceforge.net/p/keepass/discussion/329221/">https://sourceforge.net/p/keepass/discussion/329221/</a></p>
+
+<p>Feature requests &amp; bug reports:<br />
+<a href="https://sourceforge.net/p/keepass/discussion/329220/">https://sourceforge.net/p/keepass/discussion/329220/</a></p>
+
+<p>Donate:<br />
+<a href="https://keepass.info/donate.html">https://keepass.info/donate.html</a></p>
+
+<br />
+
+</body>
+</html>
