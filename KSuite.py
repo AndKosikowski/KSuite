@@ -299,7 +299,7 @@ if __name__ == "__main__":
 
     rclone_config()
 
-    cmd = r"""schtasks /create /it /sc onlogon /tn RCloneMount /tr "'C:\rclone\rclone.exe' mount server:/ S: --no-console" """
+    cmd = r"""schtasks /create /it /sc onlogon /tn RCloneMount /tr "conhost 'C:\rclone\rclone.exe' mount server:/ S: --no-console" """
     subprocess.call(["powershell","-Command",cmd], shell=True)
 
     cmd = r"""schtasks /run /tn RCloneMount"""
