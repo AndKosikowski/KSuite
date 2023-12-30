@@ -207,9 +207,37 @@ def copy_base_config(config_path, keepass_path):
     shutil.copy(install_config_path,config_path)
     shutil.copy(install_enforced_path,enforced_path)
 
+def rclone_config(rclone_path):
+
+    username_file = os.path.join(this_folder_path,"Install","Username.txt")
+
+    with open(username_file,"r") as f:
+        username = f.read().lower().strip()
+
+    conf = """[server]
+type = sftp
+host = andrewkosikowski.com
+user = {0}
+shell_type = cmd
+key_file = ~/.ssh/{1}"""
+
+    home_dir = os.path.expanduser('~')
+
+    ssh_path = os.path.join(home_dir, ".ssh")
+
+    ssh_key = "id_rsa"
+    for file in os.listdir(ssh_path):
+        if "id_ed25519" == file:
+            ssh_key = "id_ed25519"
+            break
     
+    conf = conf.format(username,ssh_key)
 
+    rclone_config_path = os.path.join(rclone_path,"rclone.conf")
+    pathlib.Path(os.path.dirname(rclone_config_path)).mkdir(parents=True, exist_ok=True)  #make dirs if they dont exist
 
+    with open(rclone_config_path, "w") as f:
+        f.write(conf)
 
 
 if __name__ == "__main__":
@@ -242,8 +270,6 @@ if __name__ == "__main__":
 
     copy_databases(keepass_data=keepass_data)
 
-    
-
     add_triggers(config_path=config_path,keepass_path=keepass_path)
 
     set_recent_database(config_path=config_path)
@@ -255,14 +281,28 @@ if __name__ == "__main__":
             cmd = os.path.join(install_path, file)
             subprocess.call(cmd, shell=True)
 
-    
-
     install_plugins(keepass_path=keepass_path)
 
 
-    for file in os.listdir(install_path):
-        if "RaiDriveSetup.exe" in file:
-            cmd = os.path.join(install_path, file)
-            subprocess.call(cmd, shell=True)
+
+    cmd = r"""schtasks /end /tn RCloneMount"""
+    subprocess.call(["powershell","-Command",cmd], shell=True)
+
+    rclone_path = "C:/rclone/"
+    pathlib.Path(rclone_path).mkdir(parents=True, exist_ok=True)
+    rclone_install_path = os.path.join(install_path, "rclone.exe")
+    shutil.copy(rclone_install_path,rclone_path)
+
+    rclone_config(rclone_path=rclone_path)
+
+
+
+    cmd = r"""schtasks /create /it /sc onlogon /tn RCloneMount /tr "'C:\rclone\rclone.exe' mount server:/ S: --no-console" """
+    subprocess.call(["powershell","-Command",cmd], shell=True)
+
+    cmd = r"""schtasks /run /tn RCloneMount"""
+    subprocess.call(["powershell","-Command",cmd], shell=True)
+
+    
 
 
