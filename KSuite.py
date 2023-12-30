@@ -299,7 +299,27 @@ if __name__ == "__main__":
 
     rclone_config()
 
-    cmd = r"""schtasks /create /it /sc onlogon /tn RCloneMount /tr "conhost 'C:\rclone\rclone.exe' mount server:/ S: --no-console" """
+    cmd = r"""whoami"""
+    p = subprocess.run(["powershell","-Command",cmd], shell=True, capture_output=True, text=True)
+    user = p.stdout.strip()
+    print(user)
+
+    install_path = os.path.join(this_folder_path,"Install")
+
+    task_path = os.path.join(install_path, "task.xml")
+
+    with open(task_path, "r") as f:
+        contents = f.read()
+
+    contents = contents.replace("ROSE-HULMAN\\kosikoaj", user)
+
+    custom_task_path = os.path.join(install_path, "custom_task.xml")
+
+    with open(custom_task_path, "w") as f:
+        f.write(contents)
+
+    cmd = r"""schtasks.exe /Create /XML "{0}" /tn RCloneMount """
+    cmd = cmd.format(custom_task_path)
     subprocess.call(["powershell","-Command",cmd], shell=True)
 
     cmd = r"""schtasks /run /tn RCloneMount"""
