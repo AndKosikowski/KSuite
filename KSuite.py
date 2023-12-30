@@ -295,7 +295,8 @@ if __name__ == "__main__":
     rclone_path = "C:/rclone/"
     pathlib.Path(rclone_path).mkdir(parents=True, exist_ok=True)
     rclone_install_path = os.path.join(install_path, "rclone.exe")
-    shutil.copy(rclone_install_path,rclone_path)
+    if not os.path.exists(rclone_install_path):
+        shutil.copy(rclone_install_path,rclone_path)
 
     rclone_config()
 
@@ -311,7 +312,7 @@ if __name__ == "__main__":
     with open(task_path, "r") as f:
         contents = f.read()
 
-    contents = contents.replace("ROSE-HULMAN\\kosikoaj", user)
+    contents = contents.replace("DOMAIN\\USER", user)
 
     custom_task_path = os.path.join(install_path, "custom_task.xml")
 

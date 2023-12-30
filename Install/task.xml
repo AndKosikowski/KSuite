@@ -1,38 +1,77 @@
-<?xml version="1.0" encoding="UTF-16"?>
-<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
-  <RegistrationInfo>
-    <Date>2023-12-30T01:22:24</Date>
-    <Author>ROSE-HULMAN\kosikoaj</Author>
-    <URI>\RCloneMount</URI>
-  </RegistrationInfo>
-  <Principals>
-    <Principal id="Author">
-      <UserId>ROSE-HULMAN\kosikoaj</UserId>
-      <LogonType>InteractiveToken</LogonType>
-    </Principal>
-  </Principals>
-  <Settings>
-    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
-    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
-    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
-    <RestartOnFailure>
-      <Count>500</Count>
-      <Interval>PT1M</Interval>
-    </RestartOnFailure>
-  </Settings>
-  <Triggers>
-    <LogonTrigger>
-      <Enabled>true</Enabled>	        <UserId>ROSE-HULMAN\kosikoaj</UserId>
-    </LogonTrigger>
-    <SessionStateChangeTrigger>
-      <StateChange>SessionUnlock</StateChange>
-      <UserId>ROSE-HULMAN\kosikoaj</UserId>
-    </SessionStateChangeTrigger>
-  </Triggers>
-  <Actions Context="Author">
-    <Exec>
-      <Command>conhost</Command>
-      <Arguments>"C:\rclone\rclone.exe" mount server:/ S: --no-console</Arguments>
-    </Exec>
-  </Actions>
+<?xml version="1.0" encoding="UTF-16"?>
+
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+
+  <RegistrationInfo>
+
+    <Date>2023-12-30T01:22:24</Date>
+
+    <Author>DOMAIN\USER</Author>
+
+    <URI>\RCloneMount</URI>
+
+  </RegistrationInfo>
+
+  <Principals>
+
+    <Principal id="Author">
+
+      <UserId>DOMAIN\USER</UserId>
+
+      <LogonType>InteractiveToken</LogonType>
+
+    </Principal>
+
+  </Principals>
+
+  <Settings>
+
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+
+    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
+
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+
+    <RestartOnFailure>
+
+      <Count>500</Count>
+
+      <Interval>PT1M</Interval>
+
+    </RestartOnFailure>
+
+  </Settings>
+
+  <Triggers>
+
+    <LogonTrigger>
+
+      <Enabled>true</Enabled>
+	  
+      <UserId>DOMAIN\USER</UserId>
+
+    </LogonTrigger>
+
+    <SessionStateChangeTrigger>
+
+      <StateChange>SessionUnlock</StateChange>
+
+      <UserId>DOMAIN\USER</UserId>
+
+    </SessionStateChangeTrigger>
+
+  </Triggers>
+
+  <Actions Context="Author">
+
+    <Exec>
+
+      <Command>conhost</Command>
+
+      <Arguments>"C:\rclone\rclone.exe" mount server:/ S: --no-console</Arguments>
+
+    </Exec>
+
+  </Actions>
+
 </Task>
