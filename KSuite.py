@@ -207,7 +207,7 @@ def copy_base_config(config_path, keepass_path):
     shutil.copy(install_config_path,config_path)
     shutil.copy(install_enforced_path,enforced_path)
 
-def rclone_config(rclone_path):
+def rclone_config():
 
     username_file = os.path.join(this_folder_path,"Install","Username.txt")
 
@@ -233,7 +233,7 @@ key_file = ~/.ssh/{1}"""
     
     conf = conf.format(username,ssh_key)
 
-    rclone_config_path = os.path.join(rclone_path,"rclone.conf")
+    rclone_config_path = os.path.join(home_dir,"AppData","Roaming","rclone","rclone.conf")
     pathlib.Path(os.path.dirname(rclone_config_path)).mkdir(parents=True, exist_ok=True)  #make dirs if they dont exist
 
     with open(rclone_config_path, "w") as f:
@@ -280,12 +280,13 @@ if __name__ == "__main__":
         if "KeePass" in file and "Setup.exe" in file:
             cmd = os.path.join(install_path, file)
             subprocess.call(cmd, shell=True)
+            break
 
     install_plugins(keepass_path=keepass_path)
 
-
-
     cmd = r"""schtasks /end /tn RCloneMount"""
+    subprocess.call(["powershell","-Command",cmd], shell=True)
+    cmd = r"""schtasks /delete /tn RCloneMount /f"""
     subprocess.call(["powershell","-Command",cmd], shell=True)
 
     rclone_path = "C:/rclone/"
@@ -293,9 +294,7 @@ if __name__ == "__main__":
     rclone_install_path = os.path.join(install_path, "rclone.exe")
     shutil.copy(rclone_install_path,rclone_path)
 
-    rclone_config(rclone_path=rclone_path)
-
-
+    rclone_config()
 
     cmd = r"""schtasks /create /it /sc onlogon /tn RCloneMount /tr "'C:\rclone\rclone.exe' mount server:/ S: --no-console" """
     subprocess.call(["powershell","-Command",cmd], shell=True)
