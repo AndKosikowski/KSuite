@@ -284,6 +284,9 @@ if __name__ == "__main__":
 
     install_plugins(keepass_path=keepass_path)
 
+    cmd = r"""winget install -e --id WinFsp.WinFsp """
+    subprocess.call(["powershell","-Command",cmd], shell=True)
+
     cmd = r"""schtasks /end /tn RCloneMount"""
     subprocess.call(["powershell","-Command",cmd], shell=True)
     cmd = r"""schtasks /delete /tn RCloneMount /f"""
