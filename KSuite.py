@@ -294,8 +294,9 @@ if __name__ == "__main__":
 
     rclone_path = "C:/rclone/"
     pathlib.Path(rclone_path).mkdir(parents=True, exist_ok=True)
+    rclone_path = os.path.join(rclone_path, "rclone.exe")
     rclone_install_path = os.path.join(install_path, "rclone.exe")
-    if not os.path.exists(rclone_install_path):
+    if not os.path.exists(rclone_path):
         shutil.copy(rclone_install_path,rclone_path)
 
     rclone_config()
