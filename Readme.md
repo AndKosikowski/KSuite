@@ -7,7 +7,7 @@ Compile with pyinstaller -F .\KSuiteHelper.py --uac-admin
 - Database.kdbx
 - Database.keyx
 - Keepass-*-Setup.exe
-- RaiDriveSetup.exe
+- RClone
 - Username.txt (File only containing the username for sftp)
 - KeePass.config.enforced.xml
 - KeePass.config.xml
